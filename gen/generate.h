@@ -10,6 +10,9 @@
 
 #define PATH_SIZE 1024
 
+#include "../man/signUp/acc.h"
+#include "../mem/clear_memory.h"
+#include "../man/logIn/log.h"
 
 // Functions:
 void gen(int choice);

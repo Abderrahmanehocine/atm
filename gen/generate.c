@@ -4,13 +4,12 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 #include "generate.h"
-#include "../man/signUp/acc.h"
-#include "../mem/clear_memory.h"
-#include "../man/logIn/log.h"
+
 
 static bool gen_account(struct info* temp){
     // if temp == NULL means there is no data of the user
     if(temp == NULL) return false;
+
     // check_email return true means the email is in the correct form
     if(check_email(temp->email)){
         insert_folder_name(temp);
@@ -54,7 +53,7 @@ void gen(int choice){
          // the user must sign up again
          goto again; 
         } 
-        
+
         // else means the account has been created 
         // clear the address stored in the memory 
         clear(temp);
