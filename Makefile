@@ -1,9 +1,12 @@
-# -*- Makefile -*-
+ #-*- Makefile -*-
 
-atm: main.o generate.o acc.o clear_memory.o log.o
-	gcc -g -pthread main.o generate.o acc.o clear_memory.o log.o -o output/atm
+atm: print main.o acc.o clear_memory.o log.o
+	gcc -g -pthread main.o acc.o clear_memory.o log.o -o output/atm
 	rm *.o
-
+# print the messege in the screen that the app is start building
+print:
+	@echo "Start building the app...."
+# compile main.c 
 main.o: src/main.c
 	gcc -c src/main.c
 
@@ -24,3 +27,4 @@ clean:
 
 delete:
 	rm -r gen/accounts/
+
