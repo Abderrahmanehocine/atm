@@ -64,11 +64,13 @@ static void* read_line(void* arg){
  char buffer[MAX_LINE_SIZE];
  char* return_str;
  int  current_line = 1;
-  while (fgets(buffer, sizeof(buffer), current->file_name) != NULL) { 
+  while(fscanf(current->file_name,"%[^\n]",buffer) != EOF) { 
     if(current_line++ == current->line){
       return_str = buffer;
+      printf("%s\n",return_str);
       pthread_exit((void*)return_str);	// return the string 
     }
+    fscanf(current->file_name,"%*[\n]");
   }
   pthread_exit(NULL);
 }
@@ -116,33 +118,16 @@ bool check_account(struct info* temp, char* em, char* pass){
    fclose(check1);
    fclose(check2);
 
-   int em_pos = get_newLine_pos(return1);
-   int pass_pos = get_newLine_pos(return2);
-
-   if(check_information(temp,return1,em_pos,return2,em_pos,em,pass)) return true;
+   if(check_information(temp,return1,return2,em,pass)) return true;
   }
   return false; 
 }
 
-// get the position of the '\n' in the string
-static int get_newLine_pos(const char* user_info){
-  char* result = strchr(user_info, '\n');
-  return result - user_info;
-}
-
 // check if the information of the user is the same with the input
-static bool check_information(struct info* temp, const char* inEmail, int em_pos, const char* inPass, int pass_pos,const char* email,const char* pass){
-  char email_input[em_pos];
-  char password_input[pass_pos];
-  
-  strncpy(email_input,inEmail,em_pos);
-  strncpy(password_input,inPass,pass_pos);
-  email_input[em_pos] = '\0';
-  password_input[pass_pos] = '\0';
-  
-  if(strcmp(email,email_input) == 0 && strcmp(pass,password_input) == 0){ 
-    strncpy(temp->email,email_input,em_pos);
-    strncpy(temp->password,password_input,pass_pos);
+static bool check_information(struct info* temp, const char* inEmail, const char* inPass, const char* email, const char* pass){
+  if(strcmp(email,inEmail) == 0 && strcmp(pass,inPass) == 0){ 
+    strcpy(temp->email,inEmail);
+    strcpy(temp->password,inPass);
     return true;
   }
   return false;
@@ -178,12 +163,6 @@ static bool get_user_data(struct info* temp,const char* folder_path){
    // close files opened
    fclose(get_name);
    fclose(get_phone);
-   int name_pos = get_newLine_pos(return1);
-   int phone_pos = get_newLine_pos(return2);
-   strcpy(temp->name,return1);
-   strcpy(temp->phone_number,return2);
-   temp->name[name_pos] = '\0';
-   temp->phone_number[phone_pos] = '\0';
    return true;
   }
   return false;

@@ -26,7 +26,6 @@ static bool check(const char *path);
 static void set_struct_data(struct threadArg* temp, FILE* file, int line_num);
 static bool check_account(struct info* temp, char* email, char* password);
 static void* read_line(void* arg);
-static int get_newLine_pos(const char* user_info);
-static bool check_information(struct info* temp, const char* inEmail, int em_pos, const char* inPass, int pass_pos,const char* email,const char* pass);
+static bool check_information(struct info* temp, const char* inEmail, const char* inPass, const char* email, const char* pass);
 static bool get_user_data(struct info* temp, const char* folder_path);
 #endif
